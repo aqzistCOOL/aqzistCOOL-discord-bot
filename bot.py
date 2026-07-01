@@ -20,19 +20,15 @@ bot = commands.Bot(
 async def on_ready():
     print(f"Online als {bot.user}")
 
+    # persistent views (WICHTIG für Buttons / Tickets / Verify)
     bot.add_view(VerifyView())
+    bot.add_view(TicketPanelView())
 
     try:
         synced = await bot.tree.sync()
         print(f"Slash Commands synced: {len(synced)}")
     except Exception as e:
         print(e)
-@bot.event
-async def on_member_join(member):
-    role = member.guild.get_role(1521341190761353287)
-
-    if role:
-        await member.add_roles(role)
        # Invite Rewards
 
 @bot.tree.command(name="invite_rewards", description="Sendet Invite Rewards")
@@ -254,7 +250,7 @@ async def setupverify(interaction: discord.Interaction):
     )
     
 # =========================
-# TICKET SYSTEM
+# TICKET SYSTEM CONFIG
 # =========================
 
 TICKET_CATEGORY_ID = 1521311216717271042
@@ -265,9 +261,12 @@ SUPPORT_ROLES = [
     1521311659921248266   # Owner
 ]
 
-ticket_counter = 0
 open_tickets = {}
 
+
+# =========================
+# TICKET PANEL VIEW
+# =========================
 
 class TicketPanelView(discord.ui.View):
     def __init__(self):
@@ -285,21 +284,18 @@ class TicketPanelView(discord.ui.View):
     )
     async def select_callback(self, interaction: discord.Interaction, select: discord.ui.Select):
 
-        global ticket_counter
-
         user = interaction.user
 
         if user.id in open_tickets:
             return await interaction.response.send_message(
-                "❌ Du hast bereits ein offenes Ticket!",
+                "❌ Du hast bereits ein Ticket offen!",
                 ephemeral=True
             )
 
         guild = interaction.guild
         category = guild.get_channel(TICKET_CATEGORY_ID)
 
-        ticket_counter += 1
-        channel_name = f"{select.values[0].lower()}-{ticket_counter:04d}"
+        channel_name = f"{select.values[0].lower()}-{user.name}"
 
         overwrites = {
             guild.default_role: discord.PermissionOverwrite(view_channel=False),
@@ -324,7 +320,7 @@ class TicketPanelView(discord.ui.View):
 
         embed = discord.Embed(
             title="🎫 Ticket erstellt",
-            description=f"Hey {user.mention}!\nBeschreibe dein Anliegen.",
+            description=f"Hey {user.mention}, beschreibe dein Problem!",
             color=0x2B2D31
         )
 
@@ -336,6 +332,10 @@ class TicketPanelView(discord.ui.View):
         )
 
 
+# =========================
+# TICKET CONTROL PANEL
+# =========================
+
 class TicketControlView(discord.ui.View):
     def __init__(self):
         super().__init__(timeout=None)
@@ -345,7 +345,7 @@ class TicketControlView(discord.ui.View):
 
         open_tickets.pop(interaction.user.id, None)
 
-        await interaction.response.send_message("🔒 Ticket wird geschlossen...", ephemeral=True)
+        await interaction.response.send_message("Ticket wird geschlossen...", ephemeral=True)
         await interaction.channel.delete()
 
     @discord.ui.button(label="🗑 Delete", style=discord.ButtonStyle.gray)
@@ -353,20 +353,12 @@ class TicketControlView(discord.ui.View):
 
         open_tickets.pop(interaction.user.id, None)
 
-        await interaction.response.send_message("🗑 Ticket wird gelöscht...", ephemeral=True)
+        await interaction.response.send_message("Ticket wird gelöscht...", ephemeral=True)
         await interaction.channel.delete()
-
-    @discord.ui.button(label="👤 Add User", style=discord.ButtonStyle.success)
-    async def add_user(self, interaction: discord.Interaction, button: discord.ui.Button):
-        await interaction.response.send_message("Feature kommt gleich (User hinzufügen).", ephemeral=True)
-
-    @discord.ui.button(label="➖ Remove User", style=discord.ButtonStyle.secondary)
-    async def remove_user(self, interaction: discord.Interaction, button: discord.ui.Button):
-        await interaction.response.send_message("Feature kommt gleich (User entfernen).", ephemeral=True)
 
 
 # =========================
-# /setuptickets COMMAND
+# SETUP COMMAND
 # =========================
 
 @bot.tree.command(name="setuptickets", description="Sendet das Ticket Panel")
@@ -390,5 +382,4 @@ async def setuptickets(interaction: discord.Interaction):
         "✅ Ticket Panel gesendet!",
         ephemeral=True
     )
-
 bot.run(TOKEN)
