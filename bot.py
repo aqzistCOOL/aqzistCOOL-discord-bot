@@ -253,7 +253,7 @@ async def setupverify(interaction: discord.Interaction):
 # TICKET SYSTEM CONFIG
 # =========================
 
-TICKET_CATEGORY_ID = 1521311216717271042
+TICKET_CATEGORY_ID = 1521338581300285552
 
 SUPPORT_ROLES = [
     1521311554048495747,  # Support
