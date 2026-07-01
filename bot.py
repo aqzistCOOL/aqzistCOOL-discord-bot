@@ -253,6 +253,142 @@ async def setupverify(interaction: discord.Interaction):
         ephemeral=True
     )
     
+# =========================
+# TICKET SYSTEM
+# =========================
 
+TICKET_CATEGORY_ID = 1521311216717271042
+
+SUPPORT_ROLES = [
+    1521311554048495747,  # Support
+    1521311755492393001,  # CO Owner
+    1521311659921248266   # Owner
+]
+
+ticket_counter = 0
+open_tickets = {}
+
+
+class TicketPanelView(discord.ui.View):
+    def __init__(self):
+        super().__init__(timeout=None)
+
+    @discord.ui.select(
+        placeholder="🎫 Wähle eine Kategorie",
+        options=[
+            discord.SelectOption(label="Purchase", emoji="💰"),
+            discord.SelectOption(label="Support", emoji="❓"),
+            discord.SelectOption(label="Partnership", emoji="🤝"),
+            discord.SelectOption(label="Report User", emoji="🚨"),
+        ],
+        custom_id="ticket_select"
+    )
+    async def select_callback(self, interaction: discord.Interaction, select: discord.ui.Select):
+
+        global ticket_counter
+
+        user = interaction.user
+
+        if user.id in open_tickets:
+            return await interaction.response.send_message(
+                "❌ Du hast bereits ein offenes Ticket!",
+                ephemeral=True
+            )
+
+        guild = interaction.guild
+        category = guild.get_channel(TICKET_CATEGORY_ID)
+
+        ticket_counter += 1
+        channel_name = f"{select.values[0].lower()}-{ticket_counter:04d}"
+
+        overwrites = {
+            guild.default_role: discord.PermissionOverwrite(view_channel=False),
+            user: discord.PermissionOverwrite(view_channel=True, send_messages=True),
+        }
+
+        for role_id in SUPPORT_ROLES:
+            role = guild.get_role(role_id)
+            if role:
+                overwrites[role] = discord.PermissionOverwrite(
+                    view_channel=True,
+                    send_messages=True
+                )
+
+        channel = await guild.create_text_channel(
+            name=channel_name,
+            category=category,
+            overwrites=overwrites
+        )
+
+        open_tickets[user.id] = channel.id
+
+        embed = discord.Embed(
+            title="🎫 Ticket erstellt",
+            description=f"Hey {user.mention}!\nBeschreibe dein Anliegen.",
+            color=0x2B2D31
+        )
+
+        await channel.send(embed=embed, view=TicketControlView())
+
+        await interaction.response.send_message(
+            f"✅ Ticket erstellt: {channel.mention}",
+            ephemeral=True
+        )
+
+
+class TicketControlView(discord.ui.View):
+    def __init__(self):
+        super().__init__(timeout=None)
+
+    @discord.ui.button(label="🔒 Close", style=discord.ButtonStyle.danger)
+    async def close(self, interaction: discord.Interaction, button: discord.ui.Button):
+
+        open_tickets.pop(interaction.user.id, None)
+
+        await interaction.response.send_message("🔒 Ticket wird geschlossen...", ephemeral=True)
+        await interaction.channel.delete()
+
+    @discord.ui.button(label="🗑 Delete", style=discord.ButtonStyle.gray)
+    async def delete(self, interaction: discord.Interaction, button: discord.ui.Button):
+
+        open_tickets.pop(interaction.user.id, None)
+
+        await interaction.response.send_message("🗑 Ticket wird gelöscht...", ephemeral=True)
+        await interaction.channel.delete()
+
+    @discord.ui.button(label="👤 Add User", style=discord.ButtonStyle.success)
+    async def add_user(self, interaction: discord.Interaction, button: discord.ui.Button):
+        await interaction.response.send_message("Feature kommt gleich (User hinzufügen).", ephemeral=True)
+
+    @discord.ui.button(label="➖ Remove User", style=discord.ButtonStyle.secondary)
+    async def remove_user(self, interaction: discord.Interaction, button: discord.ui.Button):
+        await interaction.response.send_message("Feature kommt gleich (User entfernen).", ephemeral=True)
+
+
+# =========================
+# /setuptickets COMMAND
+# =========================
+
+@bot.tree.command(name="setuptickets", description="Sendet das Ticket Panel")
+async def setuptickets(interaction: discord.Interaction):
+
+    embed = discord.Embed(
+        title="🎫 Support Tickets",
+        description=(
+            "Wähle eine Kategorie:\n\n"
+            "💰 Purchase\n"
+            "❓ Support\n"
+            "🤝 Partnership\n"
+            "🚨 Report User"
+        ),
+        color=0x2B2D31
+    )
+
+    await interaction.channel.send(embed=embed, view=TicketPanelView())
+
+    await interaction.response.send_message(
+        "✅ Ticket Panel gesendet!",
+        ephemeral=True
+    )
 
 bot.run(TOKEN)
