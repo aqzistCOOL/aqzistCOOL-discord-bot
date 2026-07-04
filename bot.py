@@ -168,7 +168,7 @@ async def tos(interaction: discord.Interaction):
 @bot.tree.command(name="prices", description="Sendet die Boosting Preise")
 async def prices(interaction: discord.Interaction):
 
-    prices_channel = bot.get_channel(1521306203445917727)
+    prices_channel = bot.get_channel(1521297572910600372)
     
     if prices_channel:
         embed = discord.Embed(
