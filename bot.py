@@ -230,7 +230,7 @@ async def prices(interaction: discord.Interaction):
         return
 
     await interaction.response.send_message("✅ Gesendet", ephemeral=True)
-    )
+    
 # -------------------------
 # VOUCH
 # -------------------------
