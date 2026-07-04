@@ -171,56 +171,59 @@ async def prices(interaction: discord.Interaction):
     embed = discord.Embed(
         title="🚀 Boosting Prices",
         color=0x2B2D31
-    )
 
-    embed.description = """
-**Rank Boosting**
+        if prices_channel:
+        await prices_channel.sent(
+       " **Rank Boosting**
 
-<:bronze1:1521299843178303659> **Bronze - Diamond** <:Diamond:1521301841327951982>
-> *4€ per Rank*
+"<:bronze1:1521299843178303659> **Bronze - Diamond** <:Diamond:1521301841327951982>
+"> *4€ per Rank*
 
-<:champion:1521299795627737140> **Champion - Champion 3** <:champion:1521299795627737140>
-> *6€ per Rank*
+"<:champion:1521299795627737140> **Champion - Champion 3** <:champion:1521299795627737140>
+"> *6€ per Rank*
 
-<:gc:1521299758302498837> **Grand Champion 1 - Grand Champion 3** <:gc3:1521302310326898689>
-> *8€ per Rank*
+"<:gc:1521299758302498837> **Grand Champion 1 - Grand Champion 3** <:gc3:1521302310326898689>
+"> *8€ per Rank*
 
-<:gc3:1521302310326898689> **Grand Champion 3 - Super Sonic Legend** <:ssl:1521299711431020555>
-> *15€ per Rank*
+"<:gc3:1521302310326898689> **Grand Champion 3 - Super Sonic Legend** <:ssl:1521299711431020555>
+"> *15€ per Rank*
 
-**Any Rank - The Rank you Want**
-> *Will be discussed in the Ticket.*
+"**Any Rank - The Rank you Want**
+"> *Will be discussed in the Ticket.*
 
-━━━━━━━━━━━━━━━━━━━━
+"━━━━━━━━━━━━━━━━━━━━
 
-**Rank Rewards**
+"**Rank Rewards**
 
-🏅 **Any Rank - Grand Champion**
-> *4€ per Rank*
+"🏅 **Any Rank - Grand Champion**
+"> *4€ per Rank*
 
-🏆 **Grand Champion - Super Sonic Legend**
-> *15€ per Game*
+"🏆 **Grand Champion - Super Sonic Legend**
+"> *15€ per Game*
 
-━━━━━━━━━━━━━━━━━━━━
+"━━━━━━━━━━━━━━━━━━━━
 
-**Tournament Wins**
+"**Tournament Wins**
 
-<:gc:1521299758302498837> **Grand Champion**
-> *17€ per Title*
+"<:gc:1521299758302498837> **Grand Champion**
+"> *17€ per Title*
 
-<:ssl:1521299711431020555> **Super Sonic Legend**
-> *35€ per Title*
+"<:ssl:1521299711431020555> **Super Sonic Legend**
+"> *35€ per Title*
+            
 
-━━━━━━━━━━━━━━━━━━━━
+"━━━━━━━━━━━━━━━━━━━━
 
-🎓 **Personal Coaching**
+"🎓 **Personal Coaching**
 
-<:ssl:1521299711431020555> **5€ per 30 minutes**
-> *For special requests (e.g. Air Dribbles, Flip Resets, Speedflips, etc.), please open a ticket.*
-"""
+"<:ssl:1521299711431020555> **5€ per 30 minutes**
+"> *For special requests (e.g. Air Dribbles, Flip Resets, Speedflips, etc.), please open a ticket.*
+)
 
-    await interaction.response.send_message(embed=embed)
-
+    await interaction.response.send_message(
+        "✅ Gesendet",
+        ephemeral=True
+        )
 
 # -------------------------
 # VOUCH
