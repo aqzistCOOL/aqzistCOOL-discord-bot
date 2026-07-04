@@ -165,66 +165,69 @@ async def tos(interaction: discord.Interaction):
 # -------------------------
 # PRICES
 # -------------------------
-@bot.tree.command(name="prices", description="Zeigt Boosting Preise")
+@bot.tree.command(name="prices", description="Sendet die Boosting Preise")
 async def prices(interaction: discord.Interaction):
 
-    embed = discord.Embed(
-        title="🚀 Boosting Prices",
-        color=0x2B2D31
+    prices_channel = bot.get_channel(1521306203445917727)  # <-- HIER deine Channel-ID eintragen
 
-        if prices_channel:
-        await prices_channel.sent(
-       " **Rank Boosting**
+    if prices_channel:
+        embed = discord.Embed(
+            title="🚀 Boosting Prices",
+            color=0x2B2D31
+        )
 
-"<:bronze1:1521299843178303659> **Bronze - Diamond** <:Diamond:1521301841327951982>
-"> *4€ per Rank*
+        embed.description = """
+**Rank Boosting**
 
-"<:champion:1521299795627737140> **Champion - Champion 3** <:champion:1521299795627737140>
-"> *6€ per Rank*
+<:bronze1:1521299843178303659> **Bronze - Diamond** <:Diamond:1521301841327951982>
+> *4€ per Rank*
 
-"<:gc:1521299758302498837> **Grand Champion 1 - Grand Champion 3** <:gc3:1521302310326898689>
-"> *8€ per Rank*
+<:champion:1521299795627737140> **Champion - Champion 3** <:champion:1521299795627737140>
+> *6€ per Rank*
 
-"<:gc3:1521302310326898689> **Grand Champion 3 - Super Sonic Legend** <:ssl:1521299711431020555>
-"> *15€ per Rank*
+<:gc:1521299758302498837> **Grand Champion 1 - Grand Champion 3** <:gc3:1521302310326898689>
+> *8€ per Rank*
 
-"**Any Rank - The Rank you Want**
-"> *Will be discussed in the Ticket.*
+<:gc3:1521302310326898689> **Grand Champion 3 - Super Sonic Legend** <:ssl:1521299711431020555>
+> *15€ per Rank*
 
-"━━━━━━━━━━━━━━━━━━━━
+**Any Rank - The Rank you Want**
+> *Will be discussed in the Ticket.*
 
-"**Rank Rewards**
+━━━━━━━━━━━━━━━━━━━━
 
-"🏅 **Any Rank - Grand Champion**
-"> *4€ per Rank*
+**Rank Rewards**
 
-"🏆 **Grand Champion - Super Sonic Legend**
-"> *15€ per Game*
+🏅 **Any Rank - Grand Champion**
+> *4€ per Rank*
 
-"━━━━━━━━━━━━━━━━━━━━
+🏆 **Grand Champion - Super Sonic Legend**
+> *15€ per Game*
 
-"**Tournament Wins**
+━━━━━━━━━━━━━━━━━━━━
 
-"<:gc:1521299758302498837> **Grand Champion**
-"> *17€ per Title*
+**Tournament Wins**
 
-"<:ssl:1521299711431020555> **Super Sonic Legend**
-"> *35€ per Title*
-            
+<:gc:1521299758302498837> **Grand Champion**
+> *17€ per Title*
 
-"━━━━━━━━━━━━━━━━━━━━
+<:ssl:1521299711431020555> **Super Sonic Legend**
+> *35€ per Title*
 
-"🎓 **Personal Coaching**
+━━━━━━━━━━━━━━━━━━━━
 
-"<:ssl:1521299711431020555> **5€ per 30 minutes**
-"> *For special requests (e.g. Air Dribbles, Flip Resets, Speedflips, etc.), please open a ticket.*
-)
+🎓 **Personal Coaching**
+
+<:ssl:1521299711431020555> **5€ per 30 minutes**
+> *For special requests (e.g. Air Dribbles, Flip Resets, Speedflips, etc.), please open a ticket.*
+"""
+
+        await prices_channel.send(embed=embed)
 
     await interaction.response.send_message(
         "✅ Gesendet",
         ephemeral=True
-        )
-
+    )
 # -------------------------
 # VOUCH
 # -------------------------
