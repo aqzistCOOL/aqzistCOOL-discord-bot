@@ -182,13 +182,13 @@ async def prices(interaction: discord.Interaction):
 <:bronze1:1521299843178303659> **Bronze - Diamond** <:Diamond:1521301841327951982>
 > *4€ per Rank*
 
-<:champion:1521299795627737140> **Champion - Champion 3** <:champion:1521299795627737140>
+<:champion:1521299795627737140> **Champion - Champion 3**
 > *6€ per Rank*
 
-<:gc:1521299758302498837> **Grand Champion 1 - Grand Champion 3** <:gc3:1521302310326898689>
+<:gc:1521299758302498837> **Grand Champion 1 - Grand Champion 3**
 > *8€ per Rank*
 
-<:gc3:1521302310326898689> **Grand Champion 3 - Super Sonic Legend** <:ssl:1521299711431020555>
+<:gc3:1521302310326898689> **Grand Champion 3 - Super Sonic Legend**
 > *15€ per Rank*
 
 **Any Rank - The Rank you Want**
@@ -220,8 +220,22 @@ async def prices(interaction: discord.Interaction):
 
 <:ssl:1521299711431020555> **5€ per 30 minutes**
 > *For special requests (e.g. Air Dribbles, Flip Resets, Speedflips, etc.), please open a ticket.*
-"""
 
+━━━━━━━━━━━━━━━━━━━━
+
+🚀 **Steam Family Share Slot – Rocket League**
+
+💰 **Price:** €80 for method and €40/slot
+
+✔️ Play Rocket League via Steam Family Sharing  
+✔️ It’s linkable to Epic Games  
+✔️ Quick & easy setup  
+✔️ No restrictions  
+
+⚠️ **Info:**
+• Not full account ownership (shared library slot), only full ownership of the shared Steam account  
+📩 Open a ticket if you’re interested or have any further questions.
+"""
 
     if prices_channel:
         await prices_channel.send(embed=embed)
@@ -230,7 +244,6 @@ async def prices(interaction: discord.Interaction):
         return
 
     await interaction.response.send_message("✅ Gesendet", ephemeral=True)
-    
 # -------------------------
 # VOUCH
 # -------------------------
