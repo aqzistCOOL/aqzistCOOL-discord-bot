@@ -168,8 +168,8 @@ async def tos(interaction: discord.Interaction):
 @bot.tree.command(name="prices", description="Sendet die Boosting Preise")
 async def prices(interaction: discord.Interaction):
 
-    prices_channel = bot.get_channel(1521306203445917727)  # <-- HIER deine Channel-ID eintragen
-
+    prices_channel = bot.get_channel(1521306203445917727)
+    
     if prices_channel:
         embed = discord.Embed(
             title="🚀 Boosting Prices",
@@ -222,11 +222,14 @@ async def prices(interaction: discord.Interaction):
 > *For special requests (e.g. Air Dribbles, Flip Resets, Speedflips, etc.), please open a ticket.*
 """
 
-        await prices_channel.send(embed=embed)
 
-    await interaction.response.send_message(
-        "✅ Gesendet",
-        ephemeral=True
+    if prices_channel:
+        await prices_channel.send(embed=embed)
+    else:
+        await interaction.response.send_message("❌ Channel nicht gefunden", ephemeral=True)
+        return
+
+    await interaction.response.send_message("✅ Gesendet", ephemeral=True)
     )
 # -------------------------
 # VOUCH
